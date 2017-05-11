@@ -40,18 +40,9 @@ fs.readFile(__dirname + '/data/jogosPorJogador.json', function callback(err, dat
 		console.log('Erro - '+ err);
 });
 
-
 // GET /
 app.get('/', function(request, response) {
   response.render('index', db);
-});
-
-// GET /
-app.get('/jogador/:numero_identificador/', function(request, response) {
-  response.render('jogador', {
-      jogadores:db.players,
-      detalhes:dbPorJogador[request.params.numero_identificador]
-  });
 });
 
 // EXERCÍCIO 3
@@ -59,12 +50,38 @@ app.get('/jogador/:numero_identificador/', function(request, response) {
 // jogador, usando os dados do banco de dados "data/jogadores.json" e
 // "data/jogosPorJogador.json", assim como alguns campos calculados
 // dica: o handler desta função pode chegar a ter umas 15 linhas de código
+// GET /
+app.get('/jogador/:numero_identificador/', function(request, response) {
+  let jogadorDB;
+  let listaJogos;
+  // Seleciona as informações do jogador
+  for (var i = 0; i < db.players.length; i++) {  
+    if (db.players[i].steamid === request.params.numero_identificador){
+      jogadorDB = db.players[i];
+      break;
+    }
+  }
+  // Ordena a lista de jogos pelos jogos mais jogados
+  listaJogos = dbPorJogador[request.params.numero_identificador].games;
+  listaJogos.sort(function(a,b) {
+    if (a.playtime_forever > b.playtime_forever)
+      return -1;
+    else
+      return 1;
+  });
+  // Passa as informações necessárias para a view jogador
+  response.render('jogador', {
+      jogador: jogadorDB,
+      jogos: listaJogos,
+      primeiroJogo: listaJogos[0]
+  });
+});
 
 
 // EXERCÍCIO 1
 // configurar para servir os arquivos estáticos da pasta "client"
 // dica: 1 linha de código
-app.use(express.static(__dirname + '/../cliente'));
+app.use(express.static(__dirname + '/../client'));
 
 // abrir servidor na porta 3000
 // dica: 1-3 linhas de código

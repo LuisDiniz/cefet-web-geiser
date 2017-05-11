@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Geiser Games</title>
@@ -8,7 +9,9 @@
   <link rel="stylesheet" href="/css/bootstrap.css">
   <link rel="stylesheet" href="/css/principal.css">
 </head>
+
 <body>
+
   <div class="container" id="site">
     <!-- Barra de navegação -->
     <nav class="navbar navbar-inverse" role="navigation">
@@ -36,7 +39,7 @@
               <!-- O número grande é um id de cada jogador que provém de jogadores.json, campo steamid -->
               <a class="media-left media-middle" href="/jogador/{{this.steamid}}">
                 <!-- A URL da foto do jogador provem de jogadores.json, do campo avatarmedium -->
-                <img src="http://cdn.akamai.steamstatic.com/steamcommunity/public/images/avatars/ad/{{this.avatarmedium}}" class="avatar">
+                <img src="{{this.avatarmedium}}" class="avatar">
               </a>
               <div class="media-body">
                 <h3 class="media-heading">
@@ -62,9 +65,15 @@
               </div>
             </li>
           {{/each}}
+
         </ul>
+
       </div>
+
     </div>
+
   </div>
+
 </body>
+
 </html>
