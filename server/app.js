@@ -52,29 +52,50 @@ app.get('/', function(request, response) {
 // dica: o handler desta função pode chegar a ter umas 15 linhas de código
 // GET /
 app.get('/jogador/:numero_identificador/', function(request, response) {
-  let jogadorDB;
-  let listaJogos;
+  // Declara variáveis
+  let jogadorDB = {};
+  let listaJogosOrdenados = [];
+  let listaTop5Jogos = [];
+  let i = 0;
+  let totalNaoJogados = 0;
+  // Seleciona os detalhes do jogador
+  listaJogosOrdenados = dbPorJogador[request.params.numero_identificador].games;  
   // Seleciona as informações do jogador
-  for (var i = 0; i < db.players.length; i++) {  
+  for (i = 0; i < db.players.length; i++) {  
     if (db.players[i].steamid === request.params.numero_identificador){
       jogadorDB = db.players[i];
       break;
     }
   }
+  listaJogosOrdenados = dbPorJogador[request.params.numero_identificador].games;
+  // Conta o número de jogos que nunca foram jogados
+  listaJogosOrdenados.forEach(function(element){
+    if (element.playtime_forever === 0)
+      totalNaoJogados++;
+  });
   // Ordena a lista de jogos pelos jogos mais jogados
-  listaJogos = dbPorJogador[request.params.numero_identificador].games;
-  listaJogos.sort(function(a,b) {
+  listaJogosOrdenados.sort(function(a,b) {
     if (a.playtime_forever > b.playtime_forever)
       return -1;
     else
       return 1;
   });
+  // Limpa a variável de controle
+  i = 0;
+  // Seleciona os 5 jogos mais jogados
+  while ((i < listaJogosOrdenados.length) && (i !== 5)){
+    listaJogosOrdenados[i].playtime_forever = Math.floor((listaJogosOrdenados[i].playtime_forever / 60),0);
+    listaTop5Jogos.push(listaJogosOrdenados[i]);
+    i = i + 1;
+  }
   // Passa as informações necessárias para a view jogador
   response.render('jogador', {
       jogador: jogadorDB,
-      jogos: listaJogos,
-      primeiroJogo: listaJogos[0]
+      jogos: listaTop5Jogos,
+      totalJogos: listaJogosOrdenados.length,
+      totalNaoJogados: totalNaoJogados
   });
+
 });
 
 

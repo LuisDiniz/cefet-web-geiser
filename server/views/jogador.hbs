@@ -37,8 +37,8 @@
                 <dt>Nome real:</dt><dd>{{jogador.realname}}</dd>
                 <dt>País:</dt><dd>{{jogador.loccountrycode}}</dd>
                 <dt>Perfil no steam:</dt><dd><a href="{{jogador.profileurl}}">@{{jogador.personaname}}</a></dd>
-                <dt>Quantidade jogos:</dt><dd>99</dd>
-                <dt>Não jogados:</dt><dd>24</dd>
+                <dt>Quantidade jogos:</dt><dd>{{totalJogos}}</dd>
+                <dt>Não jogados:</dt><dd>{{totalNaoJogados}}</dd>
               </dl>
             </div>
           </div>
@@ -53,13 +53,13 @@
         <div class="row-fluid">
           <div class="game-detailed-card media">
             <div class="media-left">
-              <img src="http://media.steampowered.com/steamcommunity/public/images/apps/{{primeiroJogo.appid}}/{{primeiroJogo.img_logo_url}}.jpg" class="game-logo">
+              <img src="http://media.steampowered.com/steamcommunity/public/images/apps/{{jogos.0.appid}}/{{jogos.0.img_logo_url}}.jpg" class="game-logo">
             </div>
             <div class="media-body">
-              <h4 class="media-heading">{{primeiroJogo.name}}</h4>
+              <h4 class="media-heading">{{jogos.0.name}}</h4>
               <dl class="dl-horizontal">
-                <dt>Tempo de jogo:</dt><dd>34h</dd>
-                <dt>Estatísticas completas:</dt><dd>http://steamcommunity.com/profiles/{{jogador.steamid}}/stats/{{primeiroJogo.appid}}</dd>
+                <dt>Tempo de jogo:</dt><dd>{{jogos.0.playtime_forever}}h</dd>
+                <dt>Estatísticas completas:</dt><dd>http://steamcommunity.com/profiles/{{jogador.steamid}}/stats/{{jogos.0.appid}}</dd>
               </dl>
             </div>
           </div>
@@ -85,7 +85,7 @@
                 <h4>{{this.name}}</h4>
               </div>
               <div class="media-right media-middle">
-                <span class="badge">40h</span>
+                <span class="badge">{{this.playtime_forever}}h</span>
               </div>
             </li>
             {{/each}}
